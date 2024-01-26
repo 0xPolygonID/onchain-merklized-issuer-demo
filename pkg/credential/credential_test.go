@@ -14,7 +14,7 @@ func TestNewCredential(t *testing.T) {
 		name               string
 		issuer             string
 		credentialRequest  *CredentialRequest
-		jsonSchemaMetadata JsonSchemaMetadata
+		jsonSchemaMetadata JSONSchemaMetadata
 	}{
 		{
 			name:   "Create credential success",
@@ -30,7 +30,7 @@ func TestNewCredential(t *testing.T) {
 				},
 				RevNonce: uintToPtr(100),
 			},
-			jsonSchemaMetadata: JsonSchemaMetadata{
+			jsonSchemaMetadata: JSONSchemaMetadata{
 				Metadata: struct {
 					URIs map[string]string `json:"uris"`
 				}{
@@ -48,7 +48,7 @@ func TestNewCredential(t *testing.T) {
 			issuerDID, err := w3c.ParseDID(tt.issuer)
 			require.NoError(t, err)
 
-			credential, err := NewCredential(*issuerDID, tt.credentialRequest, tt.jsonSchemaMetadata)
+			credential, err := NewCredential(issuerDID, tt.credentialRequest, tt.jsonSchemaMetadata)
 			require.NoError(t, err)
 
 			credentialBytes, err := json.Marshal(credential)

@@ -2,12 +2,11 @@ package main
 
 import (
 	"context"
+	_ "embed"
 	"log"
 	"net/http"
 	"reflect"
 	"strconv"
-
-	_ "embed"
 
 	"github.com/ethereum/go-ethereum/ethclient"
 	auth "github.com/iden3/go-iden3-auth/v2"
@@ -59,7 +58,7 @@ func main() {
 	if err != nil {
 		logger.WithError(err).Fatal("error creating auth verifier")
 	}
-	packagemanager, err := packagemanager.NewPackageManager(
+	pkgmanager, err := packagemanager.NewPackageManager(
 		cfg.SupportedRPC,
 		cfg.SupportedStateContracts,
 		cfg.KeysDirPath,
@@ -75,7 +74,7 @@ func main() {
 	if err != nil {
 		logger.WithError(err).Fatal("error connecting to mongodb")
 	}
-	repository, err := repository.NewCredentialRepository(mongoClient.Database("credentials"))
+	credentialRepository, err := repository.NewCredentialRepository(mongoClient.Database("credentials"))
 	if err != nil {
 		logger.WithError(err).Fatal("error creating credential repository")
 	}
@@ -93,8 +92,8 @@ func main() {
 	httpserver := newHTTPServer(
 		cfg,
 		authverifier,
-		packagemanager,
-		repository,
+		pkgmanager,
+		credentialRepository,
 		ethclients,
 		cfg.IssuersPrivateKey,
 		merklize.WithDocumentLoader(documentLoader),
@@ -105,8 +104,8 @@ func main() {
 func newHTTPServer(
 	cfg *config.Config,
 	authverifier *auth.Verifier,
-	packagemanager *libiden3comm.PackageManager,
-	repository *repository.CredentialRepository,
+	pkgmanager *libiden3comm.PackageManager,
+	credentialRepository *repository.CredentialRepository,
 	ethclients map[string]*ethclient.Client,
 	privateKeys map[string]string,
 	merklizeOpts ...merklize.MerklizeOption,
@@ -116,11 +115,11 @@ func newHTTPServer(
 		authverifier,
 	)
 	iden3commService := iden3comm.NewIden3commService(
-		packagemanager,
-		repository,
+		pkgmanager,
+		credentialRepository,
 	)
 	issuerService := issuer.NewIssuerService(
-		repository,
+		credentialRepository,
 		ethclients,
 		privateKeys,
 		merklizeOpts...,
@@ -189,10 +188,10 @@ func chainIDToDIDPrefix(chainID int) string {
 	return p[chainID]
 }
 
-func initializationAuthVerifier(config *config.Config) (*auth.Verifier, error) {
-	var resolvers = make(map[string]pubsignals.StateResolver, len(config.SupportedStateContracts))
-	for network, contractAddress := range config.SupportedStateContracts {
-		rpcURL, ok := config.SupportedRPC[network]
+func initializationAuthVerifier(configuration *config.Config) (*auth.Verifier, error) {
+	var resolvers = make(map[string]pubsignals.StateResolver, len(configuration.SupportedStateContracts))
+	for network, contractAddress := range configuration.SupportedStateContracts {
+		rpcURL, ok := configuration.SupportedRPC[network]
 		if !ok {
 			return nil, errors.Errorf("no rpc for network %s", network)
 		}
@@ -201,7 +200,7 @@ func initializationAuthVerifier(config *config.Config) (*auth.Verifier, error) {
 	}
 
 	verifier, err := auth.NewVerifier(loaders.FSKeyLoader{
-		Dir: config.KeysDirPath,
+		Dir: configuration.KeysDirPath,
 	}, resolvers)
 	if err != nil {
 		return nil, errors.Errorf("error creating verifier: %v", err)

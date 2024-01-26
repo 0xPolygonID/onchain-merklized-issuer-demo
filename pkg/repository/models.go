@@ -60,36 +60,36 @@ func NewCredentailModelFromW3C(vc *verifiable.W3CCredential) (credentialModel, e
 	}, nil
 }
 
-func (cm *credentialModel) ToW3C() (verifiable.W3CCredential, error) {
+func (cm *credentialModel) ToW3C() (*verifiable.W3CCredential, error) {
 	tmp, err := json.Marshal(cm.Proof)
 	if err != nil {
-		return verifiable.W3CCredential{},
+		return nil,
 			errors.Wrapf(err, "failed to marshal proof")
 	}
 
-	mtpProofs := []verifiable.Iden3SparseMerkleTreeProof{}
+	mtpProofs := []*verifiable.Iden3SparseMerkleTreeProof{}
 	if err := json.Unmarshal(tmp, &mtpProofs); err != nil {
-		return verifiable.W3CCredential{},
+		return nil,
 			errors.Wrapf(err, "failed to unmarshal proof")
 	}
 
-	proofs := verifiable.CredentialProofs{}
+	proofs := make(verifiable.CredentialProofs, 0, len(mtpProofs))
 	for _, proof := range mtpProofs {
-		proofs = append(proofs, &proof)
+		proofs = append(proofs, proof)
 	}
 
 	expTime, err := time.Parse(time.RFC3339Nano, cm.Expiration)
 	if err != nil {
-		return verifiable.W3CCredential{},
+		return nil,
 			errors.Wrapf(err, "failed to parse expiration time '%s'", cm.Expiration)
 	}
 	issuanceTime, err := time.Parse(time.RFC3339Nano, cm.IssuanceDate)
 	if err != nil {
-		return verifiable.W3CCredential{},
+		return nil,
 			errors.Wrapf(err, "failed to parse issuance time '%s'", cm.IssuanceDate)
 	}
 
-	return verifiable.W3CCredential{
+	return &verifiable.W3CCredential{
 		ID:                cm.ID,
 		Context:           cm.Context,
 		Type:              cm.Type,

@@ -59,6 +59,9 @@ linters:
 
 issues:
   exclude-rules:
+    - text: "exported: type name will be used as"
+      linters:
+        - revive
     - text: "unexported-return:"
       linters:
         - revive

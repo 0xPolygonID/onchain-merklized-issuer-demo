@@ -39,7 +39,7 @@ func (h *IssuerHandlers) CreateClaim(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	issuerDID := r.Context().Value(middleware.DIDContextKey{}).(*w3c.DID)
-	recordID, err := h.issuerService.IssueCredential(r.Context(), *issuerDID, credentialReq)
+	recordID, err := h.issuerService.IssueCredential(r.Context(), issuerDID, credentialReq)
 	if err != nil {
 		logger.WithContext(r.Context()).WithError(err).
 			Error("error issuing credential")
@@ -65,7 +65,7 @@ func (h *IssuerHandlers) IsRevokedClaim(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	issuerDID := r.Context().Value(middleware.DIDContextKey{}).(*w3c.DID)
-	isRevoked, err := h.issuerService.IsRevokedCredential(r.Context(), *issuerDID, uint64(n))
+	isRevoked, err := h.issuerService.IsRevokedCredential(r.Context(), issuerDID, uint64(n))
 	if err != nil {
 		logger.WithContext(r.Context()).WithError(err).
 			Error("error checking if credential is revoked")
@@ -88,7 +88,7 @@ func (h *IssuerHandlers) RevokeClaim(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	issuerDID := r.Context().Value(middleware.DIDContextKey{}).(*w3c.DID)
-	if err := h.issuerService.RevokeCredential(r.Context(), *issuerDID, uint64(n)); err != nil {
+	if err := h.issuerService.RevokeCredential(r.Context(), issuerDID, uint64(n)); err != nil {
 		logger.WithContext(r.Context()).WithError(err).
 			Error("error revoking credential")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -103,7 +103,7 @@ func (h *IssuerHandlers) GetUserVCs(w http.ResponseWriter, r *http.Request) {
 	subject := r.URL.Query().Get("subject")
 	schemaType := r.URL.Query().Get("schemaType")
 	issuerDID := r.Context().Value(middleware.DIDContextKey{}).(*w3c.DID)
-	vcs, err := h.issuerService.GetUserCredentials(r.Context(), *issuerDID, subject, schemaType)
+	vcs, err := h.issuerService.GetUserCredentials(r.Context(), issuerDID, subject, schemaType)
 	if err != nil {
 		logger.WithContext(r.Context()).WithError(err).
 			Error("error getting user credentials")
@@ -113,13 +113,16 @@ func (h *IssuerHandlers) GetUserVCs(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(vcs)
+	if err = json.NewEncoder(w).Encode(vcs); err != nil {
+		logger.WithContext(r.Context()).WithError(err).
+			Error("error marshalizing response")
+	}
 }
 
 func (h *IssuerHandlers) GetUserVCByID(w http.ResponseWriter, r *http.Request) {
 	claimID := chi.URLParam(r, "claimId")
 	issuerDID := r.Context().Value(middleware.DIDContextKey{}).(*w3c.DID)
-	vc, err := h.issuerService.GetCredentialByID(r.Context(), *issuerDID, claimID)
+	vc, err := h.issuerService.GetCredentialByID(r.Context(), issuerDID, claimID)
 	if err != nil {
 		logger.WithContext(r.Context()).WithError(err).
 			Error("error getting user credential by id")
@@ -129,12 +132,15 @@ func (h *IssuerHandlers) GetUserVCByID(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/ld+json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(vc)
+	if err = json.NewEncoder(w).Encode(vc); err != nil {
+		logger.WithContext(r.Context()).WithError(err).
+			Error("error marshalizing response")
+	}
 }
 
 func (h *IssuerHandlers) GetOffer(w http.ResponseWriter, r *http.Request) {
-	claimId := r.URL.Query().Get("claimId")
-	if claimId == "" {
+	claimID := r.URL.Query().Get("claimId")
+	if claimID == "" {
 		logger.WithContext(r.Context()).Error("claimId query param is required")
 		http.Error(w, "claimId query param is required", http.StatusBadRequest)
 		return
@@ -156,7 +162,7 @@ func (h *IssuerHandlers) GetOffer(w http.ResponseWriter, r *http.Request) {
 			URL: fmt.Sprintf("%s/api/v1/agent", strings.Trim(h.host, "/")),
 			Credentials: []protocol.CredentialOffer{
 				{
-					ID:          claimId,
+					ID:          claimID,
 					Description: "BalanceCredential",
 				},
 			},
@@ -167,12 +173,18 @@ func (h *IssuerHandlers) GetOffer(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(offerMessage)
+	if err := json.NewEncoder(w).Encode(offerMessage); err != nil {
+		logger.WithContext(r.Context()).WithError(err).
+			Error("error marshalizing response")
+	}
 }
 
 func (h *IssuerHandlers) GetIssuersList(w http.ResponseWriter, r *http.Request) {
 	issuers := h.issuerService.GetIssuersList(r.Context())
 	w.Header().Set("Content-Type", "application/ld+json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(issuers)
+	if err := json.NewEncoder(w).Encode(issuers); err != nil {
+		logger.WithContext(r.Context()).WithError(err).
+			Error("error marshalizing response")
+	}
 }

@@ -22,13 +22,13 @@ type CredentialRequest struct {
 	SubjectPosition       string         `json:"subjectPosition,omitempty"`
 	MerklizedRootPosition string         `json:"merklizedRootPosition,omitempty"`
 }
-type JsonSchemaMetadata struct {
+type JSONSchemaMetadata struct {
 	Metadata struct {
 		URIs map[string]string `json:"uris"`
 	} `json:"$metadata"`
 }
 
-func NewCredential(issuer w3c.DID, credentialRequest *CredentialRequest, jsonSchemaMetadata JsonSchemaMetadata) (*verifiable.W3CCredential, error) {
+func NewCredential(issuer *w3c.DID, credentialRequest *CredentialRequest, jsonSchemaMetadata JSONSchemaMetadata) (*verifiable.W3CCredential, error) {
 	jsonlsSchemaURL, ok := jsonSchemaMetadata.Metadata.URIs["jsonLdContext"]
 	if !ok {
 		return nil, errors.New("json schema does not contain jsonLdContext")
@@ -71,7 +71,7 @@ func NewCredential(issuer w3c.DID, credentialRequest *CredentialRequest, jsonSch
 	}, nil
 }
 
-func buildOnchainCredentialStatus(issuer w3c.DID, credentialRequest *CredentialRequest) (*verifiable.CredentialStatus, error) {
+func buildOnchainCredentialStatus(issuer *w3c.DID, credentialRequest *CredentialRequest) (*verifiable.CredentialStatus, error) {
 	contractAddress, chainID, err := extractContractIdentifier(issuer)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to build contract identifier from did '%s'", issuer)
@@ -96,8 +96,8 @@ func buildOnchainCredentialStatus(issuer w3c.DID, credentialRequest *CredentialR
 	}, nil
 }
 
-func extractContractIdentifier(did w3c.DID) (address string, chainID core.ChainID, err error) {
-	id, err := core.IDFromDID(did)
+func extractContractIdentifier(did *w3c.DID) (address string, chainID core.ChainID, err error) {
+	id, err := core.IDFromDID(*did)
 	if err != nil {
 		return "", 0, errors.Wrapf(err, "failed to get chainID from did '%s'", did.String())
 	}
@@ -105,7 +105,7 @@ func extractContractIdentifier(did w3c.DID) (address string, chainID core.ChainI
 	if err != nil {
 		return "", 0, errors.Wrapf(err, "failed to get contract address from did '%s'", did.String())
 	}
-	chainID, err = core.ChainIDfromDID(did)
+	chainID, err = core.ChainIDfromDID(*did)
 	if err != nil {
 		return "", 0, errors.Wrapf(err, "failed to get chainID from did '%s'", did.String())
 	}

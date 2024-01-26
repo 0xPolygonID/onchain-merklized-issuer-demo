@@ -31,10 +31,11 @@ func NewAuthenticationService(verifier *auth.Verifier) *AuthenticationService {
 func (a *AuthenticationService) NewAuthenticationRequest(
 	serviceURL string,
 	issuer string,
-) (protocol.AuthorizationRequestMessage, string) {
-	sessionID := strconv.Itoa(rand.Intn(1000000))
+) (request protocol.AuthorizationRequestMessage, sessionID string) {
+	//nolint:gosec // this is not a security issue
+	sessionID = strconv.Itoa(rand.Intn(1000000))
 	uri := fmt.Sprintf("%s?sessionId=%s", serviceURL, sessionID)
-	request := auth.CreateAuthorizationRequestWithMessage(
+	request = auth.CreateAuthorizationRequestWithMessage(
 		"login to website", "", issuer, uri,
 	)
 	request.ID = uuid.New().String()
@@ -43,13 +44,13 @@ func (a *AuthenticationService) NewAuthenticationRequest(
 	return request, sessionID
 }
 
-func (h *AuthenticationService) Verify(ctx context.Context,
+func (a *AuthenticationService) Verify(ctx context.Context,
 	sessionID string, tokenBytes []byte) (string, error) {
 	request, found := userSessionTracker.Get(sessionID)
 	if !found {
 		return "", errors.Errorf("auth request was not found for session ID: %s", sessionID)
 	}
-	authResponse, err := h.verifier.FullVerify(
+	authResponse, err := a.verifier.FullVerify(
 		ctx,
 		string(tokenBytes),
 		request.(protocol.AuthorizationRequestMessage),
@@ -61,7 +62,7 @@ func (h *AuthenticationService) Verify(ctx context.Context,
 	return authResponse.From, nil
 }
 
-func (h *AuthenticationService) AuthenticationRequestStatus(sessionID string) (string, error) {
+func (a *AuthenticationService) AuthenticationRequestStatus(sessionID string) (string, error) {
 	session, found := userSessionTracker.Get(sessionID)
 	if !found {
 		return "", errors.Errorf("session not found: %s", sessionID)

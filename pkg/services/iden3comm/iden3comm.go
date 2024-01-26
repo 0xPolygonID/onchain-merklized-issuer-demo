@@ -20,11 +20,11 @@ type Iden3commService struct {
 
 func NewIden3commService(
 	packerManager *iden3comm.PackageManager,
-	repository *repository.CredentialRepository,
+	credentialRepository *repository.CredentialRepository,
 ) *Iden3commService {
 	return &Iden3commService{
 		packerManager: packerManager,
-		repository:    repository,
+		repository:    credentialRepository,
 	}
 }
 
@@ -70,7 +70,7 @@ func (s *Iden3commService) handleCredentialFetchRequest(ctx context.Context, bas
 		ID:       uuid.NewString(),
 		Type:     protocol.CredentialIssuanceResponseMessageType,
 		ThreadID: basicMessage.ThreadID,
-		Body:     protocol.IssuanceMessageBody{Credential: credential},
+		Body:     protocol.IssuanceMessageBody{Credential: *credential},
 		From:     basicMessage.To,
 		To:       basicMessage.From,
 	})

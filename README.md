@@ -53,7 +53,7 @@ If you want to have a decentralized on-chain issuer, consider using this [contra
 ## How to verify the balance claim:
 1. Visit [https://verifier.polygonid.me/](https://verifier.polygonid.me/).
 2. Choose `custom` from the drop-down menu.
-3. Select the validator based on your network:
+3. Select the verifier based on your network:
     - For polygon mumbai: `did:polygonid:polygon:mumbai:2qFGtDk2SyTLJgUx576mn2peqeFtWmhsSvWLoAnom4`
     - For polygon mainnet: `did:polygonid:polygon:main:2q4irukZt3XnrdQ826C9Xp43qQLW1Hqj7q4HTmoRNz`
 4. Fill out the form:

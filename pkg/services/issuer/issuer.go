@@ -11,7 +11,7 @@ import (
 	"strconv"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/ethclient"
+	ethclientlib "github.com/ethereum/go-ethereum/ethclient"
 	core "github.com/iden3/go-iden3-core/v2"
 	"github.com/iden3/go-iden3-core/v2/w3c"
 	"github.com/iden3/go-merkletree-sql/v2"
@@ -28,19 +28,19 @@ import (
 
 type IssuerService struct {
 	repository   *repository.CredentialRepository
-	ethclients   map[string]*ethclient.Client
+	ethclients   map[string]*ethclientlib.Client
 	privateKeys  map[string]string // NOTE: for production version change to vault
 	merklizeOpts []merklize.MerklizeOption
 }
 
 func NewIssuerService(
-	repository *repository.CredentialRepository,
-	ethclients map[string]*ethclient.Client,
+	credentialRepository *repository.CredentialRepository,
+	ethclients map[string]*ethclientlib.Client,
 	privateKeys map[string]string,
 	merklizeOpts ...merklize.MerklizeOption,
 ) *IssuerService {
 	return &IssuerService{
-		repository:   repository,
+		repository:   credentialRepository,
 		ethclients:   ethclients,
 		privateKeys:  privateKeys,
 		merklizeOpts: merklizeOpts,
@@ -49,22 +49,22 @@ func NewIssuerService(
 
 func (is *IssuerService) GetUserCredentials(
 	ctx context.Context,
-	issuer w3c.DID,
+	issuer *w3c.DID,
 	subject string,
 	schemaType string,
-) ([]verifiable.W3CCredential, error) {
+) ([]*verifiable.W3CCredential, error) {
 	return is.repository.GetByUser(ctx, issuer.String(), subject, schemaType)
 }
 
 func (is *IssuerService) GetCredentialByID(
 	ctx context.Context,
-	issuer w3c.DID,
+	issuer *w3c.DID,
 	credentialID string,
-) (verifiable.W3CCredential, error) {
+) (*verifiable.W3CCredential, error) {
 	return is.repository.GetByID(ctx, issuer.String(), credentialID)
 }
 
-func (is *IssuerService) GetIssuersList(ctx context.Context) []string {
+func (is *IssuerService) GetIssuersList(_ context.Context) []string {
 	issuers := make([]string, 0, len(is.privateKeys))
 	for issuer := range is.privateKeys {
 		issuers = append(issuers, issuer)
@@ -74,7 +74,7 @@ func (is *IssuerService) GetIssuersList(ctx context.Context) []string {
 
 func (is *IssuerService) IsRevokedCredential(
 	ctx context.Context,
-	issuer w3c.DID,
+	issuer *w3c.DID,
 	nonce uint64,
 ) (bool, error) {
 	ethclient, contractAddress, err := is.lookforEthConnectForDID(issuer)
@@ -98,7 +98,7 @@ func (is *IssuerService) IsRevokedCredential(
 
 func (is *IssuerService) RevokeCredential(
 	ctx context.Context,
-	issuer w3c.DID,
+	issuer *w3c.DID,
 	nonce uint64,
 ) error {
 	ethClient, contractAddress, err := is.lookforEthConnectForDID(issuer)
@@ -131,7 +131,7 @@ func (is *IssuerService) RevokeCredential(
 
 func (is *IssuerService) IssueCredential(
 	ctx context.Context,
-	issuerDID w3c.DID,
+	issuerDID *w3c.DID,
 	credentialRequest *credential.CredentialRequest,
 ) (string, error) {
 	if credentialRequest.SubjectPosition != "" {
@@ -142,7 +142,10 @@ func (is *IssuerService) IssueCredential(
 	}
 
 	if credentialRequest.RevNonce == nil {
-		nonce := randInt64()
+		nonce, err := randInt64()
+		if err != nil {
+			return "", errors.Wrap(err, "error generating nonce")
+		}
 		credentialRequest.RevNonce = &nonce
 	}
 	if credentialRequest.MerklizedRootPosition == verifiable.CredentialMerklizedRootPositionNone {
@@ -154,7 +157,7 @@ func (is *IssuerService) IssueCredential(
 		return "", errors.Wrap(err, "error getting schema")
 	}
 	defer resp.Body.Close()
-	var jsonSchemaMetadata credential.JsonSchemaMetadata
+	var jsonSchemaMetadata credential.JSONSchemaMetadata
 	if err := json.NewDecoder(resp.Body).Decode(&jsonSchemaMetadata); err != nil {
 		return "", errors.Wrap(err, "error decoding json schema to metadata")
 	}
@@ -233,12 +236,12 @@ func (is *IssuerService) IssueCredential(
 	return id, nil
 }
 
-func (is *IssuerService) lookforEthConnectForDID(did w3c.DID) (ethclient *ethclient.Client, contractAddress string, error error) {
-	issuerID, err := core.IDFromDID(did)
+func (is *IssuerService) lookforEthConnectForDID(did *w3c.DID) (ethclient *ethclientlib.Client, contractAddress string, err error) {
+	issuerID, err := core.IDFromDID(*did)
 	if err != nil {
 		return nil, "", errors.Wrap(err, "error getting issuer ID")
 	}
-	networkID, err := core.ChainIDfromDID(did)
+	networkID, err := core.ChainIDfromDID(*did)
 	if err != nil {
 		return nil, "", errors.Wrapf(err, "network not found for did '%s'", did)
 	}
@@ -256,7 +259,7 @@ func (is *IssuerService) lookforEthConnectForDID(did w3c.DID) (ethclient *ethcli
 func extractMTPProof(
 	ctx context.Context,
 	hindex *big.Int,
-	ethclient *ethclient.Client,
+	ethclient *ethclientlib.Client,
 	contractAddress string,
 ) (verifiable.Iden3SparseMerkleTreeProof, error) {
 	proof, latestState, roots, err := blockchain.ReadMTPProof(
@@ -346,10 +349,13 @@ func strpoint(s string) *string {
 	return &s
 }
 
-func randInt64() uint64 {
+func randInt64() (uint64, error) {
 	var buf [8]byte
-	rand.Read(buf[:4])
-	return binary.LittleEndian.Uint64(buf[:])
+	_, err := rand.Read(buf[:4])
+	if err != nil {
+		return 0, err
+	}
+	return binary.LittleEndian.Uint64(buf[:]), nil
 }
 
 func printVerifiableCredential(data *verifiable.W3CCredential) {

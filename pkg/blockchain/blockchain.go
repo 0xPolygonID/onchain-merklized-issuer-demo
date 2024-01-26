@@ -9,8 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethclient"
-
+	ethclientlib "github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pkg/errors"
 )
 
@@ -18,7 +17,7 @@ const blockConfirmations = 3
 
 func IsRevokedCredential(
 	ctx context.Context,
-	ethclient *ethclient.Client,
+	ethclient *ethclientlib.Client,
 	contractAddress string,
 	nonce uint64,
 ) (bool, error) {
@@ -41,7 +40,7 @@ func IsRevokedCredential(
 
 func RevokeCredential(
 	ctx context.Context,
-	ethclient *ethclient.Client,
+	ethclient *ethclientlib.Client,
 	pk string,
 	contractAddress string,
 	nonce uint64,
@@ -64,7 +63,7 @@ func RevokeCredential(
 
 func IssueCredential(
 	ctx context.Context,
-	ethclient *ethclient.Client,
+	ethclient *ethclientlib.Client,
 	pk string,
 	contractAddress string,
 	hindex, vindex *big.Int,
@@ -88,7 +87,7 @@ func IssueCredential(
 func ReadMTPProof(
 	ctx context.Context,
 	hidx *big.Int,
-	ethclient *ethclient.Client,
+	ethclient *ethclientlib.Client,
 	contractAddress string,
 ) (proof SmtLibProof, latestState *big.Int, roots OnChainIdentityRoots, err error) {
 	contract, err := NewIdentity(
@@ -98,15 +97,15 @@ func ReadMTPProof(
 	if err != nil {
 		return proof, latestState, roots, errors.Wrapf(err, "failed to instantiate contract")
 	}
-	proof, err = contract.GetClaimProof(&bind.CallOpts{}, hidx)
+	proof, err = contract.GetClaimProof(&bind.CallOpts{Context: ctx}, hidx)
 	if err != nil {
 		return proof, latestState, roots, err
 	}
-	bigState, err := contract.GetIdentityLatestState(&bind.CallOpts{})
+	bigState, err := contract.GetIdentityLatestState(&bind.CallOpts{Context: ctx})
 	if err != nil {
 		return proof, latestState, roots, err
 	}
-	roots, err = contract.GetRootsByState(&bind.CallOpts{}, bigState)
+	roots, err = contract.GetRootsByState(&bind.CallOpts{Context: ctx}, bigState)
 	if err != nil {
 		return proof, latestState, roots, err
 	}
@@ -116,7 +115,7 @@ func ReadMTPProof(
 
 func SendTransaction(
 	ctx context.Context,
-	ethclient *ethclient.Client,
+	ethclient *ethclientlib.Client,
 	pk string,
 	call func(*bind.TransactOpts) (*types.Transaction, error),
 ) (*types.Transaction, error) {
@@ -139,7 +138,7 @@ func SendTransaction(
 	return call(opts)
 }
 
-func WaitTransaction(ctx context.Context, ethclient *ethclient.Client, tx *types.Transaction) error {
+func WaitTransaction(ctx context.Context, ethclient *ethclientlib.Client, tx *types.Transaction) error {
 	receipt, err := bind.WaitMined(ctx, ethclient, tx)
 	if err != nil {
 		return errors.Wrapf(err, "failed to wait transaction")

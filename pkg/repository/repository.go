@@ -2,9 +2,10 @@ package repository
 
 import (
 	"context"
-	"strings"
+	"log/slog"
 
 	"github.com/iden3/go-schema-processor/v2/verifiable"
+	"github.com/iden3/go-service-template/pkg/logger"
 	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -31,6 +32,7 @@ func NewCredentialRepository(db *mongo.Database) (*CredentialRepository, error) 
 		var comErr mongo.CommandError
 		if errors.As(err, &comErr) && comErr.Code == 48 {
 			// collection already exists
+			logger.Info("collection already exists", slog.String("collection", "credentials"))
 		} else {
 			return nil, errors.Wrapf(err, "failed to create collection 'credentials'")
 		}
@@ -94,7 +96,7 @@ func (cs *CredentialRepository) GetByUser(
 	issuer string,
 	user string,
 	schemaType string,
-) ([]verifiable.W3CCredential, error) {
+) ([]*verifiable.W3CCredential, error) {
 	filter := bson.M{"issuer": issuer}
 	if user != "" {
 		filter["credentialsubject.id"] = user
@@ -107,12 +109,12 @@ func (cs *CredentialRepository) GetByUser(
 		return nil, errors.Wrap(err, "failed to find credentials")
 	}
 
-	var models []credentialModel
-	if err = cursor.All(ctx, &models); err != nil {
+	var models []*credentialModel
+	if err = cursor.All(ctx, models); err != nil {
 		return nil, errors.Wrap(err, "failed to decode credentials")
 	}
 
-	vcs := make([]verifiable.W3CCredential, len(models))
+	vcs := make([]*verifiable.W3CCredential, len(models))
 	for i, model := range models {
 		vc, err := model.ToW3C()
 		if err != nil {
@@ -128,26 +130,21 @@ func (cs *CredentialRepository) GetByID(
 	ctx context.Context,
 	issuer string,
 	credentialID string,
-) (verifiable.W3CCredential, error) {
+) (*verifiable.W3CCredential, error) {
 	filter := bson.M{"issuer": issuer, "id": bson.M{"$regex": credentialID}}
 	res := cs.coll.FindOne(ctx, filter)
 	if res.Err() != nil {
-		return verifiable.W3CCredential{}, res.Err()
+		return nil, res.Err()
 	}
 	var model credentialModel
 	if err := res.Decode(&model); err != nil {
-		return verifiable.W3CCredential{},
+		return nil,
 			errors.Wrap(err, "failed to decode credential")
 	}
 	credential, err := model.ToW3C()
 	if err != nil {
-		return verifiable.W3CCredential{},
+		return nil,
 			errors.Wrap(err, "failed to convert credential model to W3C")
 	}
 	return credential, nil
-}
-
-func extractCredentialID(vc verifiable.W3CCredential) string {
-	parts := strings.Split(vc.ID, "/")
-	return parts[len(parts)-1]
 }
