@@ -47,22 +47,34 @@ type ClaimBuilderClaimData struct {
 	ValueDataSlotB        *big.Int
 }
 
-// IdentityBaseCredentialStatus is an auto generated low-level Go binding around an user-defined struct.
-type IdentityBaseCredentialStatus struct {
-	Issuer IdentityBaseIdentityStateRoots
-	Mtp    SmtLibProof
+// IOnchainCredentialStatusResolverCredentialStatus is an auto generated low-level Go binding around an user-defined struct.
+type IOnchainCredentialStatusResolverCredentialStatus struct {
+	Issuer IOnchainCredentialStatusResolverIdentityStateRoots
+	Mtp    IOnchainCredentialStatusResolverProof
 }
 
-// IdentityBaseIdentityStateRoots is an auto generated low-level Go binding around an user-defined struct.
-type IdentityBaseIdentityStateRoots struct {
+// IOnchainCredentialStatusResolverIdentityStateRoots is an auto generated low-level Go binding around an user-defined struct.
+type IOnchainCredentialStatusResolverIdentityStateRoots struct {
 	State              *big.Int
 	ClaimsTreeRoot     *big.Int
 	RevocationTreeRoot *big.Int
 	RootOfRoots        *big.Int
 }
 
-// OnChainIdentityRoots is an auto generated low-level Go binding around an user-defined struct.
-type OnChainIdentityRoots struct {
+// IOnchainCredentialStatusResolverProof is an auto generated low-level Go binding around an user-defined struct.
+type IOnchainCredentialStatusResolverProof struct {
+	Root         *big.Int
+	Existence    bool
+	Siblings     []*big.Int
+	Index        *big.Int
+	Value        *big.Int
+	AuxExistence bool
+	AuxIndex     *big.Int
+	AuxValue     *big.Int
+}
+
+// IdentityLibRoots is an auto generated low-level Go binding around an user-defined struct.
+type IdentityLibRoots struct {
 	ClaimsRoot      *big.Int
 	RevocationsRoot *big.Int
 	RootsRoot       *big.Int
@@ -82,7 +94,7 @@ type SmtLibProof struct {
 
 // IdentityMetaData contains all meta data concerning the Identity contract.
 var IdentityMetaData = &bind.MetaData{
-	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256[8]\",\"name\":\"claim\",\"type\":\"uint256[8]\"}],\"name\":\"addClaim\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[8]\",\"name\":\"claim\",\"type\":\"uint256[8]\"}],\"name\":\"addClaimAndTransit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"hashIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"hashValue\",\"type\":\"uint256\"}],\"name\":\"addClaimHash\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"hashIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"hashValue\",\"type\":\"uint256\"}],\"name\":\"addClaimHashAndTransit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"schemaHash\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"idPosition\",\"type\":\"uint8\"},{\"internalType\":\"bool\",\"name\":\"expirable\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"updatable\",\"type\":\"bool\"},{\"internalType\":\"uint8\",\"name\":\"merklizedRootPosition\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"version\",\"type\":\"uint32\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"expirationDate\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"merklizedRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"indexDataSlotA\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"indexDataSlotB\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueDataSlotA\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueDataSlotB\",\"type\":\"uint256\"}],\"internalType\":\"structClaimBuilder.ClaimData\",\"name\":\"claimData\",\"type\":\"tuple\"}],\"name\":\"buildClaim\",\"outputs\":[{\"internalType\":\"uint256[8]\",\"name\":\"\",\"type\":\"uint256[8]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"calcIdentityState\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"claimIndexHash\",\"type\":\"uint256\"}],\"name\":\"getClaimProof\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"claimIndexHash\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"}],\"name\":\"getClaimProofByRoot\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getClaimsTreeRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getIdentityLatestState\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getIsOldStateGenesis\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLastClaimsRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLastRevocationsRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLastRootsRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"}],\"name\":\"getRevocationProof\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"}],\"name\":\"getRevocationProofByRoot\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"}],\"name\":\"getRevocationStatus\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"state\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"claimsTreeRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"revocationTreeRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"rootOfRoots\",\"type\":\"uint256\"}],\"internalType\":\"structIdentityBase.IdentityStateRoots\",\"name\":\"issuer\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"mtp\",\"type\":\"tuple\"}],\"internalType\":\"structIdentityBase.CredentialStatus\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRevocationsTreeRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"claimsTreeRoot\",\"type\":\"uint256\"}],\"name\":\"getRootProof\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"claimsTreeRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"}],\"name\":\"getRootProofByRoot\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"state\",\"type\":\"uint256\"}],\"name\":\"getRootsByState\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"claimsRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"revocationsRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"rootsRoot\",\"type\":\"uint256\"}],\"internalType\":\"structOnChainIdentity.Roots\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRootsTreeRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSmtDepth\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_stateContractAddr\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"newClaimData\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"schemaHash\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"idPosition\",\"type\":\"uint8\"},{\"internalType\":\"bool\",\"name\":\"expirable\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"updatable\",\"type\":\"bool\"},{\"internalType\":\"uint8\",\"name\":\"merklizedRootPosition\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"version\",\"type\":\"uint32\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"expirationDate\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"merklizedRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"indexDataSlotA\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"indexDataSlotB\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueDataSlotA\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueDataSlotB\",\"type\":\"uint256\"}],\"internalType\":\"structClaimBuilder.ClaimData\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"}],\"name\":\"revokeClaim\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"}],\"name\":\"revokeClaimAndTransit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"transitState\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"version\",\"type\":\"uint8\"}],\"name\":\"Initialized\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256[8]\",\"name\":\"claim\",\"type\":\"uint256[8]\"}],\"name\":\"addClaim\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[8]\",\"name\":\"claim\",\"type\":\"uint256[8]\"}],\"name\":\"addClaimAndTransit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"hashIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"hashValue\",\"type\":\"uint256\"}],\"name\":\"addClaimHash\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"hashIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"hashValue\",\"type\":\"uint256\"}],\"name\":\"addClaimHashAndTransit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"schemaHash\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"idPosition\",\"type\":\"uint8\"},{\"internalType\":\"bool\",\"name\":\"expirable\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"updatable\",\"type\":\"bool\"},{\"internalType\":\"uint8\",\"name\":\"merklizedRootPosition\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"version\",\"type\":\"uint32\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"expirationDate\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"merklizedRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"indexDataSlotA\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"indexDataSlotB\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueDataSlotA\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueDataSlotB\",\"type\":\"uint256\"}],\"internalType\":\"structClaimBuilder.ClaimData\",\"name\":\"claimData\",\"type\":\"tuple\"}],\"name\":\"buildClaim\",\"outputs\":[{\"internalType\":\"uint256[8]\",\"name\":\"\",\"type\":\"uint256[8]\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"calcIdentityState\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"claimIndexHash\",\"type\":\"uint256\"}],\"name\":\"getClaimProof\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"claimIndexHash\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"}],\"name\":\"getClaimProofByRoot\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getClaimsTreeRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getIsOldStateGenesis\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLatestPublishedClaimsRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLatestPublishedRevocationsRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLatestPublishedRootsRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLatestPublishedState\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"}],\"name\":\"getRevocationProof\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"}],\"name\":\"getRevocationProofByRoot\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"}],\"name\":\"getRevocationStatus\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"state\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"claimsTreeRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"revocationTreeRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"rootOfRoots\",\"type\":\"uint256\"}],\"internalType\":\"structIOnchainCredentialStatusResolver.IdentityStateRoots\",\"name\":\"issuer\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structIOnchainCredentialStatusResolver.Proof\",\"name\":\"mtp\",\"type\":\"tuple\"}],\"internalType\":\"structIOnchainCredentialStatusResolver.CredentialStatus\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"state\",\"type\":\"uint256\"},{\"internalType\":\"uint64\",\"name\":\"nonce\",\"type\":\"uint64\"}],\"name\":\"getRevocationStatusByIdAndState\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"state\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"claimsTreeRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"revocationTreeRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"rootOfRoots\",\"type\":\"uint256\"}],\"internalType\":\"structIOnchainCredentialStatusResolver.IdentityStateRoots\",\"name\":\"issuer\",\"type\":\"tuple\"},{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structIOnchainCredentialStatusResolver.Proof\",\"name\":\"mtp\",\"type\":\"tuple\"}],\"internalType\":\"structIOnchainCredentialStatusResolver.CredentialStatus\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRevocationsTreeRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"claimsTreeRoot\",\"type\":\"uint256\"}],\"name\":\"getRootProof\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"claimsTreeRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"}],\"name\":\"getRootProofByRoot\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"root\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"existence\",\"type\":\"bool\"},{\"internalType\":\"uint256[]\",\"name\":\"siblings\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"auxExistence\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"auxIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auxValue\",\"type\":\"uint256\"}],\"internalType\":\"structSmtLib.Proof\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"state\",\"type\":\"uint256\"}],\"name\":\"getRootsByState\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"claimsRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"revocationsRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"rootsRoot\",\"type\":\"uint256\"}],\"internalType\":\"structIdentityLib.Roots\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getRootsTreeRoot\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getSmtDepth\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_stateContractAddr\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"newClaimData\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"schemaHash\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"idPosition\",\"type\":\"uint8\"},{\"internalType\":\"bool\",\"name\":\"expirable\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"updatable\",\"type\":\"bool\"},{\"internalType\":\"uint8\",\"name\":\"merklizedRootPosition\",\"type\":\"uint8\"},{\"internalType\":\"uint32\",\"name\":\"version\",\"type\":\"uint32\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"expirationDate\",\"type\":\"uint64\"},{\"internalType\":\"uint256\",\"name\":\"merklizedRoot\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"indexDataSlotA\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"indexDataSlotB\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueDataSlotA\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"valueDataSlotB\",\"type\":\"uint256\"}],\"internalType\":\"structClaimBuilder.ClaimData\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"}],\"name\":\"revokeClaim\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint64\",\"name\":\"revocationNonce\",\"type\":\"uint64\"}],\"name\":\"revokeClaimAndTransit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"transitState\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // IdentityABI is the input ABI used to generate the binding from.
@@ -417,37 +429,6 @@ func (_Identity *IdentityCallerSession) GetId() (*big.Int, error) {
 	return _Identity.Contract.GetId(&_Identity.CallOpts)
 }
 
-// GetIdentityLatestState is a free data retrieval call binding the contract method 0x378c9d1a.
-//
-// Solidity: function getIdentityLatestState() view returns(uint256)
-func (_Identity *IdentityCaller) GetIdentityLatestState(opts *bind.CallOpts) (*big.Int, error) {
-	var out []interface{}
-	err := _Identity.contract.Call(opts, &out, "getIdentityLatestState")
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
-}
-
-// GetIdentityLatestState is a free data retrieval call binding the contract method 0x378c9d1a.
-//
-// Solidity: function getIdentityLatestState() view returns(uint256)
-func (_Identity *IdentitySession) GetIdentityLatestState() (*big.Int, error) {
-	return _Identity.Contract.GetIdentityLatestState(&_Identity.CallOpts)
-}
-
-// GetIdentityLatestState is a free data retrieval call binding the contract method 0x378c9d1a.
-//
-// Solidity: function getIdentityLatestState() view returns(uint256)
-func (_Identity *IdentityCallerSession) GetIdentityLatestState() (*big.Int, error) {
-	return _Identity.Contract.GetIdentityLatestState(&_Identity.CallOpts)
-}
-
 // GetIsOldStateGenesis is a free data retrieval call binding the contract method 0xf84c7c1e.
 //
 // Solidity: function getIsOldStateGenesis() view returns(bool)
@@ -479,12 +460,12 @@ func (_Identity *IdentityCallerSession) GetIsOldStateGenesis() (bool, error) {
 	return _Identity.Contract.GetIsOldStateGenesis(&_Identity.CallOpts)
 }
 
-// GetLastClaimsRoot is a free data retrieval call binding the contract method 0xdbd97e23.
+// GetLatestPublishedClaimsRoot is a free data retrieval call binding the contract method 0x523b8136.
 //
-// Solidity: function getLastClaimsRoot() view returns(uint256)
-func (_Identity *IdentityCaller) GetLastClaimsRoot(opts *bind.CallOpts) (*big.Int, error) {
+// Solidity: function getLatestPublishedClaimsRoot() view returns(uint256)
+func (_Identity *IdentityCaller) GetLatestPublishedClaimsRoot(opts *bind.CallOpts) (*big.Int, error) {
 	var out []interface{}
-	err := _Identity.contract.Call(opts, &out, "getLastClaimsRoot")
+	err := _Identity.contract.Call(opts, &out, "getLatestPublishedClaimsRoot")
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -496,26 +477,26 @@ func (_Identity *IdentityCaller) GetLastClaimsRoot(opts *bind.CallOpts) (*big.In
 
 }
 
-// GetLastClaimsRoot is a free data retrieval call binding the contract method 0xdbd97e23.
+// GetLatestPublishedClaimsRoot is a free data retrieval call binding the contract method 0x523b8136.
 //
-// Solidity: function getLastClaimsRoot() view returns(uint256)
-func (_Identity *IdentitySession) GetLastClaimsRoot() (*big.Int, error) {
-	return _Identity.Contract.GetLastClaimsRoot(&_Identity.CallOpts)
+// Solidity: function getLatestPublishedClaimsRoot() view returns(uint256)
+func (_Identity *IdentitySession) GetLatestPublishedClaimsRoot() (*big.Int, error) {
+	return _Identity.Contract.GetLatestPublishedClaimsRoot(&_Identity.CallOpts)
 }
 
-// GetLastClaimsRoot is a free data retrieval call binding the contract method 0xdbd97e23.
+// GetLatestPublishedClaimsRoot is a free data retrieval call binding the contract method 0x523b8136.
 //
-// Solidity: function getLastClaimsRoot() view returns(uint256)
-func (_Identity *IdentityCallerSession) GetLastClaimsRoot() (*big.Int, error) {
-	return _Identity.Contract.GetLastClaimsRoot(&_Identity.CallOpts)
+// Solidity: function getLatestPublishedClaimsRoot() view returns(uint256)
+func (_Identity *IdentityCallerSession) GetLatestPublishedClaimsRoot() (*big.Int, error) {
+	return _Identity.Contract.GetLatestPublishedClaimsRoot(&_Identity.CallOpts)
 }
 
-// GetLastRevocationsRoot is a free data retrieval call binding the contract method 0x43ffbcc5.
+// GetLatestPublishedRevocationsRoot is a free data retrieval call binding the contract method 0x9674cfa4.
 //
-// Solidity: function getLastRevocationsRoot() view returns(uint256)
-func (_Identity *IdentityCaller) GetLastRevocationsRoot(opts *bind.CallOpts) (*big.Int, error) {
+// Solidity: function getLatestPublishedRevocationsRoot() view returns(uint256)
+func (_Identity *IdentityCaller) GetLatestPublishedRevocationsRoot(opts *bind.CallOpts) (*big.Int, error) {
 	var out []interface{}
-	err := _Identity.contract.Call(opts, &out, "getLastRevocationsRoot")
+	err := _Identity.contract.Call(opts, &out, "getLatestPublishedRevocationsRoot")
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -527,26 +508,26 @@ func (_Identity *IdentityCaller) GetLastRevocationsRoot(opts *bind.CallOpts) (*b
 
 }
 
-// GetLastRevocationsRoot is a free data retrieval call binding the contract method 0x43ffbcc5.
+// GetLatestPublishedRevocationsRoot is a free data retrieval call binding the contract method 0x9674cfa4.
 //
-// Solidity: function getLastRevocationsRoot() view returns(uint256)
-func (_Identity *IdentitySession) GetLastRevocationsRoot() (*big.Int, error) {
-	return _Identity.Contract.GetLastRevocationsRoot(&_Identity.CallOpts)
+// Solidity: function getLatestPublishedRevocationsRoot() view returns(uint256)
+func (_Identity *IdentitySession) GetLatestPublishedRevocationsRoot() (*big.Int, error) {
+	return _Identity.Contract.GetLatestPublishedRevocationsRoot(&_Identity.CallOpts)
 }
 
-// GetLastRevocationsRoot is a free data retrieval call binding the contract method 0x43ffbcc5.
+// GetLatestPublishedRevocationsRoot is a free data retrieval call binding the contract method 0x9674cfa4.
 //
-// Solidity: function getLastRevocationsRoot() view returns(uint256)
-func (_Identity *IdentityCallerSession) GetLastRevocationsRoot() (*big.Int, error) {
-	return _Identity.Contract.GetLastRevocationsRoot(&_Identity.CallOpts)
+// Solidity: function getLatestPublishedRevocationsRoot() view returns(uint256)
+func (_Identity *IdentityCallerSession) GetLatestPublishedRevocationsRoot() (*big.Int, error) {
+	return _Identity.Contract.GetLatestPublishedRevocationsRoot(&_Identity.CallOpts)
 }
 
-// GetLastRootsRoot is a free data retrieval call binding the contract method 0x643accb3.
+// GetLatestPublishedRootsRoot is a free data retrieval call binding the contract method 0xc6365a3b.
 //
-// Solidity: function getLastRootsRoot() view returns(uint256)
-func (_Identity *IdentityCaller) GetLastRootsRoot(opts *bind.CallOpts) (*big.Int, error) {
+// Solidity: function getLatestPublishedRootsRoot() view returns(uint256)
+func (_Identity *IdentityCaller) GetLatestPublishedRootsRoot(opts *bind.CallOpts) (*big.Int, error) {
 	var out []interface{}
-	err := _Identity.contract.Call(opts, &out, "getLastRootsRoot")
+	err := _Identity.contract.Call(opts, &out, "getLatestPublishedRootsRoot")
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -558,18 +539,49 @@ func (_Identity *IdentityCaller) GetLastRootsRoot(opts *bind.CallOpts) (*big.Int
 
 }
 
-// GetLastRootsRoot is a free data retrieval call binding the contract method 0x643accb3.
+// GetLatestPublishedRootsRoot is a free data retrieval call binding the contract method 0xc6365a3b.
 //
-// Solidity: function getLastRootsRoot() view returns(uint256)
-func (_Identity *IdentitySession) GetLastRootsRoot() (*big.Int, error) {
-	return _Identity.Contract.GetLastRootsRoot(&_Identity.CallOpts)
+// Solidity: function getLatestPublishedRootsRoot() view returns(uint256)
+func (_Identity *IdentitySession) GetLatestPublishedRootsRoot() (*big.Int, error) {
+	return _Identity.Contract.GetLatestPublishedRootsRoot(&_Identity.CallOpts)
 }
 
-// GetLastRootsRoot is a free data retrieval call binding the contract method 0x643accb3.
+// GetLatestPublishedRootsRoot is a free data retrieval call binding the contract method 0xc6365a3b.
 //
-// Solidity: function getLastRootsRoot() view returns(uint256)
-func (_Identity *IdentityCallerSession) GetLastRootsRoot() (*big.Int, error) {
-	return _Identity.Contract.GetLastRootsRoot(&_Identity.CallOpts)
+// Solidity: function getLatestPublishedRootsRoot() view returns(uint256)
+func (_Identity *IdentityCallerSession) GetLatestPublishedRootsRoot() (*big.Int, error) {
+	return _Identity.Contract.GetLatestPublishedRootsRoot(&_Identity.CallOpts)
+}
+
+// GetLatestPublishedState is a free data retrieval call binding the contract method 0x3d59ec60.
+//
+// Solidity: function getLatestPublishedState() view returns(uint256)
+func (_Identity *IdentityCaller) GetLatestPublishedState(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Identity.contract.Call(opts, &out, "getLatestPublishedState")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// GetLatestPublishedState is a free data retrieval call binding the contract method 0x3d59ec60.
+//
+// Solidity: function getLatestPublishedState() view returns(uint256)
+func (_Identity *IdentitySession) GetLatestPublishedState() (*big.Int, error) {
+	return _Identity.Contract.GetLatestPublishedState(&_Identity.CallOpts)
+}
+
+// GetLatestPublishedState is a free data retrieval call binding the contract method 0x3d59ec60.
+//
+// Solidity: function getLatestPublishedState() view returns(uint256)
+func (_Identity *IdentityCallerSession) GetLatestPublishedState() (*big.Int, error) {
+	return _Identity.Contract.GetLatestPublishedState(&_Identity.CallOpts)
 }
 
 // GetRevocationProof is a free data retrieval call binding the contract method 0x26485063.
@@ -634,35 +646,66 @@ func (_Identity *IdentityCallerSession) GetRevocationProofByRoot(revocationNonce
 	return _Identity.Contract.GetRevocationProofByRoot(&_Identity.CallOpts, revocationNonce, root)
 }
 
-// GetRevocationStatus is a free data retrieval call binding the contract method 0xeb62ed0e.
+// GetRevocationStatus is a free data retrieval call binding the contract method 0x110c96a7.
 //
-// Solidity: function getRevocationStatus(uint64 nonce) view returns(((uint256,uint256,uint256,uint256),(uint256,bool,uint256[],uint256,uint256,bool,uint256,uint256)))
-func (_Identity *IdentityCaller) GetRevocationStatus(opts *bind.CallOpts, nonce uint64) (IdentityBaseCredentialStatus, error) {
+// Solidity: function getRevocationStatus(uint256 id, uint64 nonce) view returns(((uint256,uint256,uint256,uint256),(uint256,bool,uint256[],uint256,uint256,bool,uint256,uint256)))
+func (_Identity *IdentityCaller) GetRevocationStatus(opts *bind.CallOpts, id *big.Int, nonce uint64) (IOnchainCredentialStatusResolverCredentialStatus, error) {
 	var out []interface{}
-	err := _Identity.contract.Call(opts, &out, "getRevocationStatus", nonce)
+	err := _Identity.contract.Call(opts, &out, "getRevocationStatus", id, nonce)
 
 	if err != nil {
-		return *new(IdentityBaseCredentialStatus), err
+		return *new(IOnchainCredentialStatusResolverCredentialStatus), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new(IdentityBaseCredentialStatus)).(*IdentityBaseCredentialStatus)
+	out0 := *abi.ConvertType(out[0], new(IOnchainCredentialStatusResolverCredentialStatus)).(*IOnchainCredentialStatusResolverCredentialStatus)
 
 	return out0, err
 
 }
 
-// GetRevocationStatus is a free data retrieval call binding the contract method 0xeb62ed0e.
+// GetRevocationStatus is a free data retrieval call binding the contract method 0x110c96a7.
 //
-// Solidity: function getRevocationStatus(uint64 nonce) view returns(((uint256,uint256,uint256,uint256),(uint256,bool,uint256[],uint256,uint256,bool,uint256,uint256)))
-func (_Identity *IdentitySession) GetRevocationStatus(nonce uint64) (IdentityBaseCredentialStatus, error) {
-	return _Identity.Contract.GetRevocationStatus(&_Identity.CallOpts, nonce)
+// Solidity: function getRevocationStatus(uint256 id, uint64 nonce) view returns(((uint256,uint256,uint256,uint256),(uint256,bool,uint256[],uint256,uint256,bool,uint256,uint256)))
+func (_Identity *IdentitySession) GetRevocationStatus(id *big.Int, nonce uint64) (IOnchainCredentialStatusResolverCredentialStatus, error) {
+	return _Identity.Contract.GetRevocationStatus(&_Identity.CallOpts, id, nonce)
 }
 
-// GetRevocationStatus is a free data retrieval call binding the contract method 0xeb62ed0e.
+// GetRevocationStatus is a free data retrieval call binding the contract method 0x110c96a7.
 //
-// Solidity: function getRevocationStatus(uint64 nonce) view returns(((uint256,uint256,uint256,uint256),(uint256,bool,uint256[],uint256,uint256,bool,uint256,uint256)))
-func (_Identity *IdentityCallerSession) GetRevocationStatus(nonce uint64) (IdentityBaseCredentialStatus, error) {
-	return _Identity.Contract.GetRevocationStatus(&_Identity.CallOpts, nonce)
+// Solidity: function getRevocationStatus(uint256 id, uint64 nonce) view returns(((uint256,uint256,uint256,uint256),(uint256,bool,uint256[],uint256,uint256,bool,uint256,uint256)))
+func (_Identity *IdentityCallerSession) GetRevocationStatus(id *big.Int, nonce uint64) (IOnchainCredentialStatusResolverCredentialStatus, error) {
+	return _Identity.Contract.GetRevocationStatus(&_Identity.CallOpts, id, nonce)
+}
+
+// GetRevocationStatusByIdAndState is a free data retrieval call binding the contract method 0xaad72921.
+//
+// Solidity: function getRevocationStatusByIdAndState(uint256 id, uint256 state, uint64 nonce) view returns(((uint256,uint256,uint256,uint256),(uint256,bool,uint256[],uint256,uint256,bool,uint256,uint256)))
+func (_Identity *IdentityCaller) GetRevocationStatusByIdAndState(opts *bind.CallOpts, id *big.Int, state *big.Int, nonce uint64) (IOnchainCredentialStatusResolverCredentialStatus, error) {
+	var out []interface{}
+	err := _Identity.contract.Call(opts, &out, "getRevocationStatusByIdAndState", id, state, nonce)
+
+	if err != nil {
+		return *new(IOnchainCredentialStatusResolverCredentialStatus), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(IOnchainCredentialStatusResolverCredentialStatus)).(*IOnchainCredentialStatusResolverCredentialStatus)
+
+	return out0, err
+
+}
+
+// GetRevocationStatusByIdAndState is a free data retrieval call binding the contract method 0xaad72921.
+//
+// Solidity: function getRevocationStatusByIdAndState(uint256 id, uint256 state, uint64 nonce) view returns(((uint256,uint256,uint256,uint256),(uint256,bool,uint256[],uint256,uint256,bool,uint256,uint256)))
+func (_Identity *IdentitySession) GetRevocationStatusByIdAndState(id *big.Int, state *big.Int, nonce uint64) (IOnchainCredentialStatusResolverCredentialStatus, error) {
+	return _Identity.Contract.GetRevocationStatusByIdAndState(&_Identity.CallOpts, id, state, nonce)
+}
+
+// GetRevocationStatusByIdAndState is a free data retrieval call binding the contract method 0xaad72921.
+//
+// Solidity: function getRevocationStatusByIdAndState(uint256 id, uint256 state, uint64 nonce) view returns(((uint256,uint256,uint256,uint256),(uint256,bool,uint256[],uint256,uint256,bool,uint256,uint256)))
+func (_Identity *IdentityCallerSession) GetRevocationStatusByIdAndState(id *big.Int, state *big.Int, nonce uint64) (IOnchainCredentialStatusResolverCredentialStatus, error) {
+	return _Identity.Contract.GetRevocationStatusByIdAndState(&_Identity.CallOpts, id, state, nonce)
 }
 
 // GetRevocationsTreeRoot is a free data retrieval call binding the contract method 0x01c85c77.
@@ -761,15 +804,15 @@ func (_Identity *IdentityCallerSession) GetRootProofByRoot(claimsTreeRoot *big.I
 // GetRootsByState is a free data retrieval call binding the contract method 0xb8db6871.
 //
 // Solidity: function getRootsByState(uint256 state) view returns((uint256,uint256,uint256))
-func (_Identity *IdentityCaller) GetRootsByState(opts *bind.CallOpts, state *big.Int) (OnChainIdentityRoots, error) {
+func (_Identity *IdentityCaller) GetRootsByState(opts *bind.CallOpts, state *big.Int) (IdentityLibRoots, error) {
 	var out []interface{}
 	err := _Identity.contract.Call(opts, &out, "getRootsByState", state)
 
 	if err != nil {
-		return *new(OnChainIdentityRoots), err
+		return *new(IdentityLibRoots), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new(OnChainIdentityRoots)).(*OnChainIdentityRoots)
+	out0 := *abi.ConvertType(out[0], new(IdentityLibRoots)).(*IdentityLibRoots)
 
 	return out0, err
 
@@ -778,14 +821,14 @@ func (_Identity *IdentityCaller) GetRootsByState(opts *bind.CallOpts, state *big
 // GetRootsByState is a free data retrieval call binding the contract method 0xb8db6871.
 //
 // Solidity: function getRootsByState(uint256 state) view returns((uint256,uint256,uint256))
-func (_Identity *IdentitySession) GetRootsByState(state *big.Int) (OnChainIdentityRoots, error) {
+func (_Identity *IdentitySession) GetRootsByState(state *big.Int) (IdentityLibRoots, error) {
 	return _Identity.Contract.GetRootsByState(&_Identity.CallOpts, state)
 }
 
 // GetRootsByState is a free data retrieval call binding the contract method 0xb8db6871.
 //
 // Solidity: function getRootsByState(uint256 state) view returns((uint256,uint256,uint256))
-func (_Identity *IdentityCallerSession) GetRootsByState(state *big.Int) (OnChainIdentityRoots, error) {
+func (_Identity *IdentityCallerSession) GetRootsByState(state *big.Int) (IdentityLibRoots, error) {
 	return _Identity.Contract.GetRootsByState(&_Identity.CallOpts, state)
 }
 

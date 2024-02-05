@@ -23,7 +23,10 @@ If you want to have a decentralized on-chain issuer, consider using this [contra
     cp .env.example .env
     ```
 
-3. Run `ngrok` for callbacks.
+3. Run `ngrok` on 8080 port.
+    ```sh
+    ngrok http 8080
+    ```
 
 4. Use the utility to calculate the issuerDID from the smart contract address:
     ```bash

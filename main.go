@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/ethereum/go-ethereum/ethclient"
 	auth "github.com/iden3/go-iden3-auth/v2"
@@ -121,7 +122,7 @@ func newHTTPServer(
 	issuerService := issuer.NewIssuerService(
 		credentialRepository,
 		ethclients,
-		privateKeys,
+		sanitizePrivateKeys(privateKeys),
 		merklizeOpts...,
 	)
 
@@ -231,4 +232,20 @@ func initDocumentLoaderWithCache() (ld.DocumentLoader, error) {
 	}
 	l := schemaLoaders.NewDocumentLoader(nil, "", schemaLoaders.WithCacheEngine(memoryCacheEngine))
 	return l, nil
+}
+
+func sanitizePrivateKeys(privateKeys map[string]string) map[string]string {
+	sanitized := make(map[string]string, len(privateKeys))
+	for k, v := range privateKeys {
+		v := strings.TrimSpace(v)
+		switch {
+		case strings.HasPrefix(v, "0x"):
+			sanitized[k] = strings.TrimPrefix(v, "0x")
+		case strings.HasPrefix(v, "0X"):
+			sanitized[k] = strings.TrimPrefix(v, "0X")
+		default:
+			sanitized[k] = v
+		}
+	}
+	return sanitized
 }

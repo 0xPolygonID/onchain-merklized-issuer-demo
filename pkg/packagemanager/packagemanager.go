@@ -27,23 +27,25 @@ type state struct {
 func (s *state) verify(_ circuits.CircuitID, pubsignals []string) error {
 	bytePubsig, err := json.Marshal(pubsignals)
 	if err != nil {
-		return err
+		return errors.Errorf("error marshaling pubsignals: %v", err)
 	}
 
 	authPubSignals := circuits.AuthV2PubSignals{}
 	err = authPubSignals.PubSignalsUnmarshal(bytePubsig)
 	if err != nil {
-		return err
+		return errors.Errorf("error unmarshaling pubsignals: %v", err)
 	}
 
 	did, err := core.ParseDIDFromID(*authPubSignals.UserID)
 	if err != nil {
-		return err
+		return errors.Errorf("error parsing DID from ID '%s': %v",
+			authPubSignals.UserID.String(), err)
 	}
 
 	chainID, err := core.ChainIDfromDID(*did)
 	if err != nil {
-		return err
+		return errors.Errorf("error getting chainID from DID '%s': %v",
+			did, err)
 	}
 
 	contract, ok := s.contracts[int(chainID)]
@@ -54,13 +56,14 @@ func (s *state) verify(_ circuits.CircuitID, pubsignals []string) error {
 	globalState := authPubSignals.GISTRoot.BigInt()
 	globalStateInfo, err := contract.GetGISTRootInfo(&bind.CallOpts{}, globalState)
 	if err != nil {
-		return err
+		return errors.Errorf("error getting global state info '%s': %v", globalState, err)
 	}
 	if (big.NewInt(0)).Cmp(globalStateInfo.CreatedAtTimestamp) == 0 {
-		return errors.Errorf("root %s doesn't exist in smart contract", globalState.String())
+		return errors.Errorf("root '%s' doesn't exist in smart contract", globalState)
 	}
 	if globalState.Cmp(globalStateInfo.Root) != 0 {
-		return errors.Errorf("invalid global state info in the smart contract, expected root %s, got %s", globalState.String(), globalStateInfo.Root.String())
+		return errors.Errorf("invalid global state info in the smart contract, expected root '%s', got '%s'",
+			globalState.String(), globalStateInfo.Root.String())
 	}
 
 	if (big.NewInt(0)).Cmp(globalStateInfo.ReplacedByRoot) != 0 && time.Since(time.Unix(globalStateInfo.ReplacedAtTimestamp.Int64(), 0)) > time.Minute*15 {
@@ -88,15 +91,15 @@ func NewPackageManager(
 	for chainID, stateAddr := range supportedStateContracts {
 		rpcURL, ok := supportedRPC[chainID]
 		if !ok {
-			return nil, errors.Errorf("not supported RPC for blockchain %s", chainID)
+			return nil, errors.Errorf("not supported RPC for blockchain '%s'", chainID)
 		}
 		ec, err := ethclient.Dial(rpcURL)
 		if err != nil {
-			return nil, err
+			return nil, errors.Errorf("error creating eth client: %v", err)
 		}
 		stateContract, err := abi.NewState(common.HexToAddress(stateAddr), ec)
 		if err != nil {
-			return nil, err
+			return nil, errors.Errorf("error creating state contract ABI: %v", err)
 		}
 		v, err := strconv.Atoi(chainID)
 		if err != nil {
@@ -120,7 +123,7 @@ func NewPackageManager(
 
 	err = packageManager.RegisterPackers(zkpPackerV2, &packers.PlainMessagePacker{})
 	if err != nil {
-		return nil, err
+		return nil, errors.Errorf("error registering packers: %v", err)
 	}
 
 	return packageManager, nil

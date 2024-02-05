@@ -89,7 +89,7 @@ func ReadMTPProof(
 	hidx *big.Int,
 	ethclient *ethclientlib.Client,
 	contractAddress string,
-) (proof SmtLibProof, latestState *big.Int, roots OnChainIdentityRoots, err error) {
+) (proof SmtLibProof, latestState *big.Int, roots IdentityLibRoots, err error) {
 	contract, err := NewIdentity(
 		common.HexToAddress(contractAddress),
 		ethclient,
@@ -101,7 +101,7 @@ func ReadMTPProof(
 	if err != nil {
 		return proof, latestState, roots, err
 	}
-	bigState, err := contract.GetIdentityLatestState(&bind.CallOpts{Context: ctx})
+	bigState, err := contract.GetLatestPublishedState(&bind.CallOpts{Context: ctx})
 	if err != nil {
 		return proof, latestState, roots, err
 	}
