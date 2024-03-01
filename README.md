@@ -16,7 +16,7 @@ If you want to have a decentralized on-chain issuer, consider using this [contra
 
 **Steps to run:**
 
-1. Deploy the [on-chain merklized issuer contract](https://github.com/0xPolygonID/contracts/blob/main/contracts/examples/IdentityExample.sol). [Script to deploy](https://github.com/0xPolygonID/contracts/blob/main/scripts/deployIdentityExample.ts).
+1. Deploy the [on-chain merklized issuer contract](https://github.com/0xPolygonID/contracts/blob/main/contracts/examples/IdentityExample.sol). [Script to deploy](https://github.com/0xPolygonID/contracts/blob/main/scripts/deployIdentityExample.ts) or use the [npm command](https://github.com/0xPolygonID/contracts/blob/d308e1f586ea177005b34872992d16c3cb20e474/package.json#L60).
 
 2. Copy `.env.example` to `.env`
     ```sh
@@ -54,11 +54,11 @@ If you want to have a decentralized on-chain issuer, consider using this [contra
 7. Open: http://localhost:3000
 
 ## How to verify the balance claim:
-1. Visit [https://verifier.polygonid.me/](https://verifier.polygonid.me/).
+1. Visit [https://verifier-demo.polygonid.me/](https://verifier-demo.polygonid.me/).
 2. Choose `custom` from the drop-down menu.
 3. Select the verifier based on your network:
-    - For polygon mumbai: `did:polygonid:polygon:mumbai:2qFGtDk2SyTLJgUx576mn2peqeFtWmhsSvWLoAnom4`
-    - For polygon mainnet: `did:polygonid:polygon:main:2q4irukZt3XnrdQ826C9Xp43qQLW1Hqj7q4HTmoRNz`
+    - For polygon mumbai: `Mumbai`
+    - For polygon mainnet: `Mainnet`
 4. Fill out the form:
     - **Circuit Id**: Credential Atomic Query MTP
     - **Url**: https://gist.githubusercontent.com/ilya-korotya/b06baa37453ed9aedfcb79100b84d51f/raw/balance-v1.jsonld
