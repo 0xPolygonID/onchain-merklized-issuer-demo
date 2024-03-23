@@ -44,6 +44,8 @@ type Config struct {
 	IssuersPrivateKey KVstring `envconfig:"ISSUERS_PRIVATE_KEY" required:"true"`
 
 	KeysDirPath string `envconfig:"KEYS_DIR_PATH" default:"./keys"`
+
+	IPFSURL string `envconfig:"IPFS_URL" default:"ipfs.io"`
 }
 
 type Log struct {
