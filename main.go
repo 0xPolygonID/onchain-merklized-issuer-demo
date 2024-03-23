@@ -34,6 +34,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	shell "github.com/ipfs/go-ipfs-api"
 )
 
 var (
@@ -90,6 +92,8 @@ func main() {
 		logger.WithError(err).Fatal("error creating document loader")
 	}
 
+	sh := shell.NewShell(cfg.IPFSURL)
+
 	httpserver := newHTTPServer(
 		cfg,
 		authverifier,
@@ -98,6 +102,7 @@ func main() {
 		ethclients,
 		cfg.IssuersPrivateKey,
 		merklize.WithDocumentLoader(documentLoader),
+		merklize.WithIPFSClient(sh),
 	)
 	newShutdownManager(httpserver).HandleShutdownSignal()
 }
