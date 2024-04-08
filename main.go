@@ -17,6 +17,7 @@ import (
 	schemaLoaders "github.com/iden3/go-schema-processor/v2/loaders"
 	"github.com/iden3/go-schema-processor/v2/merklize"
 	"github.com/iden3/go-service-template/config"
+	"github.com/iden3/go-service-template/pkg/ipfs"
 	"github.com/iden3/go-service-template/pkg/logger"
 	"github.com/iden3/go-service-template/pkg/packagemanager"
 	"github.com/iden3/go-service-template/pkg/repository"
@@ -34,8 +35,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-
-	shell "github.com/ipfs/go-ipfs-api"
 )
 
 var (
@@ -87,12 +86,12 @@ func main() {
 		logger.WithError(err).Fatal("error creating eth clients")
 	}
 
-	documentLoader, err := initDocumentLoaderWithCache()
+	ipfsCli := ipfs.NewIPFSClient(cfg.IPFSURL)
+
+	documentLoader, err := initDocumentLoaderWithCache(ipfsCli)
 	if err != nil {
 		logger.WithError(err).Fatal("error creating document loader")
 	}
-
-	sh := shell.NewShell(cfg.IPFSURL)
 
 	httpserver := newHTTPServer(
 		cfg,
@@ -101,8 +100,8 @@ func main() {
 		credentialRepository,
 		ethclients,
 		cfg.IssuersPrivateKey,
+		ipfsCli,
 		merklize.WithDocumentLoader(documentLoader),
-		merklize.WithIPFSClient(sh),
 	)
 	newShutdownManager(httpserver).HandleShutdownSignal()
 }
@@ -114,6 +113,7 @@ func newHTTPServer(
 	credentialRepository *repository.CredentialRepository,
 	ethclients map[string]*ethclient.Client,
 	privateKeys map[string]string,
+	ipfsCli issuer.IPFSCli,
 	merklizeOpts ...merklize.MerklizeOption,
 ) *httptransport.Server {
 	// init services
@@ -128,6 +128,7 @@ func newHTTPServer(
 		credentialRepository,
 		ethclients,
 		sanitizePrivateKeys(privateKeys),
+		ipfsCli,
 		merklizeOpts...,
 	)
 
@@ -226,7 +227,7 @@ func initializationEthClients(supportedRPC map[string]string) (map[string]*ethcl
 	return ethClients, nil
 }
 
-func initDocumentLoaderWithCache() (ld.DocumentLoader, error) {
+func initDocumentLoaderWithCache(ipfs schemaLoaders.IPFSClient) (ld.DocumentLoader, error) {
 	opts := schemaLoaders.WithEmbeddedDocumentBytes(
 		"https://www.w3.org/2018/credentials/v1",
 		w3cCredentialSchemaV1,
@@ -235,7 +236,7 @@ func initDocumentLoaderWithCache() (ld.DocumentLoader, error) {
 	if err != nil {
 		return nil, err
 	}
-	l := schemaLoaders.NewDocumentLoader(nil, "", schemaLoaders.WithCacheEngine(memoryCacheEngine))
+	l := schemaLoaders.NewDocumentLoader(ipfs, "", schemaLoaders.WithCacheEngine(memoryCacheEngine))
 	return l, nil
 }
 

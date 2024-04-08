@@ -7,7 +7,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/go-chi/cors v1.2.1
 	github.com/google/uuid v1.5.0
-	github.com/iden3/contracts-abi/state/go/abi v1.0.0-beta.3
+	github.com/iden3/contracts-abi/state/go/abi v1.0.1
 	github.com/iden3/go-circuits/v2 v2.0.0
 	github.com/iden3/go-iden3-auth/v2 v2.0.0
 	github.com/iden3/go-iden3-core/v2 v2.0.3

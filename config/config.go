@@ -45,7 +45,7 @@ type Config struct {
 
 	KeysDirPath string `envconfig:"KEYS_DIR_PATH" default:"./keys"`
 
-	IPFSURL string `envconfig:"IPFS_URL" default:"ipfs.io"`
+	IPFSURL string `envconfig:"IPFS_URL" default:"https://ipfs.io"`
 }
 
 type Log struct {
