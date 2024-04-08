@@ -5,9 +5,11 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"encoding/json"
+	"io"
 	"log/slog"
 	"math/big"
 	"net/http"
+	"net/url"
 	"strconv"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -26,17 +28,23 @@ import (
 	"github.com/pkg/errors"
 )
 
+type IPFSCli interface {
+	Cat(string) (io.ReadCloser, error)
+}
+
 type IssuerService struct {
 	repository   *repository.CredentialRepository
 	ethclients   map[string]*ethclientlib.Client
 	privateKeys  map[string]string // NOTE: for production version change to vault
 	merklizeOpts []merklize.MerklizeOption
+	ipfsCli      IPFSCli
 }
 
 func NewIssuerService(
 	credentialRepository *repository.CredentialRepository,
 	ethclients map[string]*ethclientlib.Client,
 	privateKeys map[string]string,
+	ipfsCli IPFSCli,
 	merklizeOpts ...merklize.MerklizeOption,
 ) *IssuerService {
 	return &IssuerService{
@@ -44,6 +52,7 @@ func NewIssuerService(
 		ethclients:   ethclients,
 		privateKeys:  privateKeys,
 		merklizeOpts: merklizeOpts,
+		ipfsCli:      ipfsCli,
 	}
 }
 
@@ -152,16 +161,37 @@ func (is *IssuerService) IssueCredential(
 		credentialRequest.MerklizedRootPosition = verifiable.CredentialMerklizedRootPositionIndex
 	}
 
-	resp, err := http.DefaultClient.Get(credentialRequest.CredentialSchema)
+	schemaRawURL, err := url.Parse(credentialRequest.CredentialSchema)
 	if err != nil {
-		return "", errors.Wrap(err, "error getting schema")
-	}
-	defer resp.Body.Close()
-	var jsonSchemaMetadata credential.JSONSchemaMetadata
-	if err := json.NewDecoder(resp.Body).Decode(&jsonSchemaMetadata); err != nil {
-		return "", errors.Wrap(err, "error decoding json schema to metadata")
+		return "", errors.Wrap(err, "error parsing schema url")
 	}
 
+	var credentialSchemaBody io.ReadCloser
+	switch schemaRawURL.Scheme {
+	case "ipfs":
+		credentialSchemaBody, err = is.ipfsCli.Cat(schemaRawURL.Host)
+		if err != nil {
+			return "", errors.Wrap(err, "error getting schema")
+		}
+	case "http", "https":
+		resp, err := http.DefaultClient.Get(credentialRequest.CredentialSchema)
+		if err != nil {
+			return "", errors.Wrap(err, "error getting schema")
+		}
+		if resp.StatusCode != http.StatusOK {
+			_ = resp.Body.Close()
+			return "", errors.Errorf("error getting schema: %s", resp.Status)
+		}
+		credentialSchemaBody = resp.Body
+	default:
+		return "", errors.Errorf("unsupported schema url '%s'", schemaRawURL.Scheme)
+	}
+	defer credentialSchemaBody.Close()
+
+	var jsonSchemaMetadata credential.JSONSchemaMetadata
+	if err = json.NewDecoder(credentialSchemaBody).Decode(&jsonSchemaMetadata); err != nil {
+		return "", errors.Wrap(err, "error decoding json schema to metadata")
+	}
 	verifiableCredential, err := credential.NewCredential(issuerDID, credentialRequest, jsonSchemaMetadata)
 	if err != nil {
 		return "", errors.Wrap(err, "error creating credential")
