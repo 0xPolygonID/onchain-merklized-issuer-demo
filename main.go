@@ -227,7 +227,7 @@ func initializationEthClients(supportedRPC map[string]string) (map[string]*ethcl
 	return ethClients, nil
 }
 
-func initDocumentLoaderWithCache(ipfs schemaLoaders.IPFSClient) (ld.DocumentLoader, error) {
+func initDocumentLoaderWithCache(ipfsCli schemaLoaders.IPFSClient) (ld.DocumentLoader, error) {
 	opts := schemaLoaders.WithEmbeddedDocumentBytes(
 		"https://www.w3.org/2018/credentials/v1",
 		w3cCredentialSchemaV1,
@@ -236,7 +236,7 @@ func initDocumentLoaderWithCache(ipfs schemaLoaders.IPFSClient) (ld.DocumentLoad
 	if err != nil {
 		return nil, err
 	}
-	l := schemaLoaders.NewDocumentLoader(ipfs, "", schemaLoaders.WithCacheEngine(memoryCacheEngine))
+	l := schemaLoaders.NewDocumentLoader(ipfsCli, "", schemaLoaders.WithCacheEngine(memoryCacheEngine))
 	return l, nil
 }
 
