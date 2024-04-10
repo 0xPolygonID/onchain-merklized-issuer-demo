@@ -10,7 +10,7 @@ require (
 	github.com/iden3/contracts-abi/state/go/abi v1.0.1
 	github.com/iden3/go-circuits/v2 v2.0.0
 	github.com/iden3/go-iden3-auth/v2 v2.0.0
-	github.com/iden3/go-iden3-core/v2 v2.0.3
+	github.com/iden3/go-iden3-core/v2 v2.1.0
 	github.com/iden3/go-jwz/v2 v2.0.0
 	github.com/iden3/go-merkletree-sql/v2 v2.0.4
 	github.com/iden3/go-schema-processor/v2 v2.2.0

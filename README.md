@@ -35,11 +35,11 @@ If you want to have a decentralized on-chain issuer, consider using this [contra
     Available flags:
     - `contract_address` - contract address that will convert to did
     - `network` - network of the contract. Default: **polygon**
-    - `chain` - chain of the contract. Default: **mumbai**
+    - `chain` - chain of the contract. Default: **amoy**
 
 5. Fill the `.env` config file with the proper variables:
     ```bash
-    SUPPORTED_RPC="137=<RPC_POLYGON_MAINNET>,80001=<RPC_POLYGON_MUMBAI>"
+    SUPPORTED_RPC="80002=<RPC_POLYGON_AMOY>"
     ISSUERS_PRIVATE_KEY="<ISSUER_DID>=<PRIVATE_KEY_OF_THE_CONTRACT_DEPLOYER>"
     EXTERNAL_HOST="<NGROK_URL>"
     ```
@@ -59,6 +59,7 @@ If you want to have a decentralized on-chain issuer, consider using this [contra
 3. Select the verifier based on your network:
     - For polygon mumbai: `Mumbai`
     - For polygon mainnet: `Mainnet`
+    - For polygon amoy: `Amoy`
 4. Fill out the form:
     - **Circuit Id**: Credential Atomic Query MTP
     - **Url**: https://gist.githubusercontent.com/ilya-korotya/b06baa37453ed9aedfcb79100b84d51f/raw/balance-v1.jsonld
