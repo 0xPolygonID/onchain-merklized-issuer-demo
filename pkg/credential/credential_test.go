@@ -20,7 +20,7 @@ func TestNewCredential(t *testing.T) {
 			name:   "Create credential success",
 			issuer: "did:polygonid:polygon:mumbai:2qCU58EJgrEMZqnh5RaCdNre9pFtMwtYdDosZ61Zjx",
 			credentialRequest: &CredentialRequest{
-				CredentialSchema: "https://gist.githubusercontent.com/ilya-korotya/26dd57890e61c586e3fd51b4533aadc4/raw/balance-v1.json",
+				CredentialSchema: "ipfs://QmY3nuhAYYH13wDxNMzzqhSHpjeCz1pDYY7efzF2162xFE",
 				Type:             "BalanceCredential",
 				Expiration:       1893456000,
 				CredentialSubject: map[string]any{
@@ -35,7 +35,7 @@ func TestNewCredential(t *testing.T) {
 					URIs map[string]string `json:"uris"`
 				}{
 					URIs: map[string]string{
-						"jsonLdContext": "https://gist.githubusercontent.com/ilya-korotya/26dd57890e61c586e3fd51b4533aadc4/raw/balance-v1.json",
+						"jsonLdContext": "ipfs://QmUY6d7ZemyXB5jxkZNVmqmaa3oRoFCG64HSfqQRCoGPg3",
 					},
 				},
 			},

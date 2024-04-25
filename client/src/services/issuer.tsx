@@ -70,7 +70,7 @@ export interface CredentialRequest {
     expiration: number;
 }
 export class CredentialBalanceRequest {
-    private credentialSchema: string = 'https://gist.githubusercontent.com/ilya-korotya/26dd57890e61c586e3fd51b4533aadc4/raw/balance-v1.json';
+    private credentialSchema: string = 'ipfs://QmY3nuhAYYH13wDxNMzzqhSHpjeCz1pDYY7efzF2162xFE';
     private type: string = 'BalanceCredential';
     private id: string;
     private balance: number;
