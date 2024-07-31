@@ -70,7 +70,7 @@ func main() {
 		logger.WithError(err).Fatal("error creating package manager")
 	}
 
-	// nolint: govet // resource leak is handled by shutdown manager
+	//nolint:govet //resource leak is handled by shutdown manager
 	mongoConnectTimeout, _ := context.WithTimeout(context.Background(), time.Second*20)
 	reg := bson.NewRegistry()
 	reg.RegisterTypeMapEntry(bson.TypeEmbeddedDocument, reflect.TypeOf(bson.M{}))
