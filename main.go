@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/ethereum/go-ethereum/ethclient"
 	auth "github.com/iden3/go-iden3-auth/v2"
@@ -69,10 +70,12 @@ func main() {
 		logger.WithError(err).Fatal("error creating package manager")
 	}
 
+	//nolint:govet //resource leak is handled by shutdown manager
+	mongoConnectTimeout, _ := context.WithTimeout(context.Background(), time.Second*20)
 	reg := bson.NewRegistry()
 	reg.RegisterTypeMapEntry(bson.TypeEmbeddedDocument, reflect.TypeOf(bson.M{}))
 	opts := options.Client().ApplyURI(cfg.MongoDBConnectionString).SetRegistry(reg)
-	mongoClient, err := mongo.Connect(context.Background(), opts)
+	mongoClient, err := mongo.Connect(mongoConnectTimeout, opts)
 	if err != nil {
 		logger.WithError(err).Fatal("error connecting to mongodb")
 	}
