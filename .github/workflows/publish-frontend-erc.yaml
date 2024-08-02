@@ -52,7 +52,7 @@ jobs:
           docker build \
             -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest \
             -t ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} \
-            --build-arg="NEXT_PUBLIC_ISSUER_URL={{ env.NEXT_PUBLIC_ISSUER_URL }}" \
+            --build-arg="NEXT_PUBLIC_ISSUER_URL=${{ env.NEXT_PUBLIC_ISSUER_URL }}" \
             -f client/Dockerfile client
 
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
