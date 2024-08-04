@@ -62,7 +62,7 @@ If you want to have a decentralized on-chain issuer, consider using this [contra
     - For polygon amoy: `Amoy`
 4. Fill out the form:
     - **Circuit Id**: Credential Atomic Query MTP
-    - **Url**: ipfs://QmUY6d7ZemyXB5jxkZNVmqmaa3oRoFCG64HSfqQRCoGPg3
+    - **Url**: ipfs://QmbbTKPTJy5zpS2aWBRps1duU8V3zC84jthpWDXE9mLHBX
     - **Type**: BalanceCredential
     - **Field**: balance
     - **Operator**: All operators work for the claim
