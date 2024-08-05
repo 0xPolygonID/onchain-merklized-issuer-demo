@@ -54,21 +54,16 @@ If you want to have a decentralized on-chain issuer, consider using this [contra
 7. Open: http://localhost:3000
 
 ## How to verify the balance claim:
-1. Visit [https://verifier-demo.polygonid.me/](https://verifier-demo.polygonid.me/).
-2. Choose `custom` from the drop-down menu.
-3. Select the verifier based on your network:
-    - For polygon mumbai: `Mumbai`
-    - For polygon mainnet: `Mainnet`
-    - For polygon amoy: `Amoy`
-4. Fill out the form:
-    - **Circuit Id**: Credential Atomic Query MTP
-    - **Url**: ipfs://QmbbTKPTJy5zpS2aWBRps1duU8V3zC84jthpWDXE9mLHBX
-    - **Type**: BalanceCredential
-    - **Field**: balance
-    - **Operator**: All operators work for the claim
-    - **Value**: Set the value that you want to compare
-5. Press submit.
-6. Use the mobile application to verify.
+1. Visit [https://tools.privado.id/query-builder](https://tools.privado.id/query-builder).
+1. In the `URL to JSON-LD context` field, select the schema `ipfs://QmbbTKPTJy5zpS2aWBRps1duU8V3zC84jthpWDXE9mLHBX`.
+1. In the `Attribute field` text box, select the `balance` field.
+1. In the `Proof type` field, select `Merkle Tree Proof (MTP)` proof type.
+1. In the `Circuit ID` drop down, select the `Credential Atomic Query MTP v2` circuit.
+1. Select a query type in the `Query type` section.
+1. Select a `Operator` if you have selected the `Conditional` check box in the `Query type` section.
+1. Provide an attribute value in the `Attribute value` field if you have selected the `Conditional` check box.
+1. Click the `Create query` button.
+1. Scan the QR code using the mobile application.
 
 ## License
 
