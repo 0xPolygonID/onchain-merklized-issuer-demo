@@ -193,8 +193,9 @@ func newShutdownManager(toclose ...shutdown.Shutdown) *shutdown.Manager {
 func chainIDToDIDPrefix(chainID int) string {
 	p := map[int]string{
 		137:   "polygon:main",
-		80001: "polygon:mumbai",
 		80002: "polygon:amoy",
+		21000: "privado:main",
+		21001: "privado:test",
 	}
 	return p[chainID]
 }
