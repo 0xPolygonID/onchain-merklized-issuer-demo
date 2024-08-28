@@ -58,6 +58,7 @@ func (s *state) verify(_ circuits.CircuitID, pubsignals []string) error {
 	if err != nil {
 		return errors.Errorf("error getting global state info '%s': %v", globalState, err)
 	}
+	//nolint:gocritic //for future use
 	// if (big.NewInt(0)).Cmp(globalStateInfo.CreatedAtTimestamp) == 0 {
 	// 	return errors.Errorf("root '%s' doesn't exist in smart contract", globalState)
 	// }
