@@ -365,13 +365,21 @@ func convertChainProofToMerkleProof(proof *blockchain.SmtLibProof) (*merkletree.
 		siblings = append(siblings, h)
 	}
 
+	if proof.AuxExistence {
+		return merkletree.NewProofFromData(
+			proof.Existence,
+			siblings,
+			&merkletree.NodeAux{
+				Key:   nodeAuxIndex,
+				Value: nodeAuxValue,
+			},
+		)
+	}
+
 	return merkletree.NewProofFromData(
 		proof.Existence,
 		siblings,
-		&merkletree.NodeAux{
-			Key:   nodeAuxIndex,
-			Value: nodeAuxValue,
-		},
+		nil,
 	)
 }
 
